@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Map</title>
+
+<link rel="stylesheet" href="leaflet.css" />
+
+<style type="text/css">
+
+body {
+	padding:0;
+	margin:0;
+	background-color:#cccccc;
+	overflow:hidden;
+}
+
+#map {
+	width:100px;
+	height:100px;
+	border:0;
+	margin:0;
+}
+
+a {
+	font-weight:bold;
+	text-decoration:none;
+	color:#ff0000;
+}
+
+.leaflet-container {
+	color: #000000!important;
+}
+.leaflet-container a {
+    color: #000000!important;
+	font-weight:bold;
+	text-decoration:none!important;
+}
+
+.markerlink {
+	font-weight:bold!important;
+	font-size:18px!important;
+}
+
+</style>
+
+<script src="jquery-2.1.0.min.js"></script>
+ 
+<script src="leaflet.js"></script>
+
+<script>
+
+var map;
+var tilelayer;
+
+
+var attribution = "&copy <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors under <a href='https://www.openstreetmap.org/copyright'>CC BY-SA</a>, tiles courtesy of <a href='http://www.mapquest.com/'>MapQuest</a>";
+
+
+$( document ).ready(function() {
+
+	setMapSize();
+
+	map = L.map('map',{zoomControl: false});
+	
+	addTileLayer('file:///android_asset/map/{z}/{x}/{y}.png',8,14);
+
+    setMapBounds(41.42,41.33,2.22,2.10);
+
+    setCenterZoom(41.38,2.17,13);
+
+    addMarker(41.38,2.17,'HEY');
+});
+
+
+function setMapSize() {
+	var w = $(window).width();
+	var h = $(window).height();
+	$("#map").css("width",w+"px");
+	$("#map").css("height",h+"px");
+}
+
+
+function setMapBounds(north, south, east, west) {
+	var southWest = L.latLng(south,west);
+    var northEast = L.latLng(north,east);
+    var bounds = L.latLngBounds(southWest, northEast);
+	map.setMaxBounds(bounds);
+}
+
+
+function addTileLayer(source, minzoomm, maxzoom) {
+	tilelayer = L.tileLayer(
+		source, 
+		{
+			unloadInvisibleTiles: true,
+			tileSize: 256,
+			detectRetina: false,
+			minZoom: minzoomm,
+			maxZoom: maxzoom,
+			attribution: attribution
+		}
+	);
+	tilelayer.addTo(map);
+}
+
+
+function setCenterZoom(lat,lon,zoom) {
+	map.setView([lat,lon],zoom);
+}
+
+
+function addMarker(lat, lon, name) {
+    var i = L.icon({
+    	iconUrl: 		"marker.png",
+    	iconSize:     	[100, 100],
+    	iconAnchor:   	[50, 50]
+    });
+    var m = L.marker([lat,lon],{icon:i});
+	m.bindPopup(name);
+	m.addTo(map);
+}
+
+</script>
+ 
+</head>
+<body>
+
+<div id="map"></div>
+
+</body>
+</html>
