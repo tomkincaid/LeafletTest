@@ -31,7 +31,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         leaflet = (WebView) findViewById(R.id.leaflet);
-        //leaflet.setWebChromeClient(new WebChromeClient());
         leaflet.getSettings().setJavaScriptEnabled(true);
 
     }
